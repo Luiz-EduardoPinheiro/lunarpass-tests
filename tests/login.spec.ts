@@ -17,21 +17,21 @@ test('Deve realizar validação dos campos obrigatórios', async ({ page }) => {
     const texto = page.getByRole('heading', {name: 'Mission Control'})
     await expect(texto).toBeVisible()
     await page.getByRole('button', {name: 'Entrar'}).click()
-    const msgEmail = page.getByText('Informe um e-mail válido')
-    await expect(msgEmail).toBeVisible()
-    await expect(msgEmail).toHaveText('Informe um e-mail válido')
+    const alerta = page.locator("p[role='alert']")
+    await expect(alerta).toBeVisible()
+    await expect(alerta).toHaveText('Informe um e-mail válido')
     await page.getByLabel('E-mail').fill('buzz@lunarpass.dev')
     await page.getByRole('button', {name: 'Entrar'}).click()
-    const msgSenha = page.getByText('Informe a senha')
-    await expect(msgSenha).toBeVisible()
-    await expect(msgSenha).toHaveText('Informe a senha')
+    //const msgSenha = page.getByText('Informe a senha')
+    await expect(alerta).toBeVisible()
+    await expect(alerta).toHaveText('Informe a senha')
 
 })
 
-test('Deve negar autenticação quando for informada email inválido', async ({ page }) => {
+test('Deve negar a autenticação quando for informado email inválido', async ({ page }) => {
 
 })
 
-test('Deve negar autenticação quando for informada senha incorreta', async ({ page }) => {
+test('Deve negar a autenticação quando for informada senha incorreta para o email cadastrado', async ({ page }) => {
     
 })
