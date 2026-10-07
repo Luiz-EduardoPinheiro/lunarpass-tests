@@ -1,16 +1,19 @@
 import { test, expect } from '@playwright/test'
 import { LoginPage } from '../pages/LoginPage'
+import { NavBar } from '../pages/components/NavBar'
 
 let loginPage: LoginPage
+let navBar: NavBar
 
 test.beforeEach(async ({page}) => {
     loginPage = new LoginPage(page)
+    navBar = new NavBar(page)
     await loginPage.acessarLogin()
 })
 
 test('Deve realizar autenticação com sucesso', async ({}) => {
     await loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-    await loginPage.validarLogin()
+    await expect(navBar.logout).toBeVisible()
 })
 
 test('Deve realizar validação dos campos obrigatórios para o login', async ({}) => {

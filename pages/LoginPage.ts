@@ -20,9 +20,4 @@ export class LoginPage {
         await this.page.getByLabel('Senha').fill(senha)
         await this.page.getByRole('button', {name: 'Entrar'}).click()
     }
-
-    async validarLogin(){
-        const btnSair = this.page.getByRole('button', {name: 'Sair'})
-        await expect(btnSair).toBeVisible()
-    }
 }
