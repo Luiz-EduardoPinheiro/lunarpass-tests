@@ -2,8 +2,17 @@ import { test, expect } from '@playwright/test'
 import { LoginPage } from '../pages/login.page'
 import { NavBar } from '../pages/components/navbar'
 import { faker  } from '@faker-js/faker'
+import { Mission } from '../support/mission'
 
 test('Deve realizar o cadastro com sucesso de uma missão', async ({ page }) => {
+  const mission: Mission = {
+    id: 'LP-'+faker.string.alphanumeric({length: {min: 5, max: 5}, casing: 'upper'}),
+    rocket: 'Starship',
+    baseLunar: 'aurora',
+    departureDate: '2027-01-07',
+    returnDate: '14 de jan. de 2027',
+    price: '5324.70'
+  }
   const loginPage = new LoginPage(page)
   const navBar = new NavBar(page)
   loginPage.acessarLogin()
@@ -11,13 +20,12 @@ test('Deve realizar o cadastro com sucesso de uma missão', async ({ page }) => 
   expect(navBar.logout).toBeVisible
   await page.getByRole('link', { name: 'Nova missão' }).click()
   await expect(page.getByRole('heading', { name: 'Programar missão' })).toBeVisible()
-  const nomeMissao = 'LP-'+faker.string.alphanumeric({length: {min: 5, max: 5}, casing: 'upper'})
-  await page.getByRole('textbox', { name: 'ID da missão' }).fill(nomeMissao)
-  await page.getByRole('textbox', { name: 'Foguete' }).fill('Starship')
-  await page.getByLabel('Base lunar').selectOption('aurora')
-  await page.getByRole('textbox', { name: 'Data de partida' }).fill('2027-01-07')
-  await expect(page.getByTestId('mission-form-return-date')).toContainText('14 de jan. de 2027')
-  await page.getByRole('spinbutton', { name: 'Preço por passagem (USD)' }).fill('5324.70')
+  await page.getByRole('textbox', { name: 'ID da missão' }).fill(mission.id)
+  await page.getByRole('textbox', { name: 'Foguete' }).fill(mission.rocket)
+  await page.getByLabel('Base lunar').selectOption(mission.baseLunar)
+  await page.getByRole('textbox', { name: 'Data de partida' }).fill(mission.departureDate)
+  await expect(page.getByTestId('mission-form-return-date')).toContainText(mission.returnDate)
+  await page.getByRole('spinbutton', { name: 'Preço por passagem (USD)' }).fill(mission.price)
   await page.getByRole('button', { name: 'Salvar missão' }).click()
   await expect(page.getByRole('listitem')).toContainText('A nova missão foi adicionada ao catálogo e já está disponível para reservas.')
 })
@@ -26,6 +34,6 @@ test('Não deve realizar o cadastro de missão com o nome já existente', async 
 
 })
 
-test('Não deve realizar o cadastro de missão se não seguir o padrão de criação do nome da missão', async ({ page }) => {
+test('Não deve realizar o cadastro de missão se não seguir o padrão de criação do nome da missão', async ({page}) => {
 
 })
