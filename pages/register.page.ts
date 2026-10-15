@@ -5,11 +5,13 @@ export class RegisterPage {
     readonly page: Page
     readonly tittle: Locator
     readonly alert: Locator
+    readonly return: Locator
 
     constructor (page: Page) {
         this.page = page
         this.tittle = page.getByRole('heading', { name: 'Programar missão' })
         this.alert = page.getByRole('alert')
+        this.return = page.getByRole('link', {name: 'Voltar'})
     }
 
     async submit(mission: Mission){

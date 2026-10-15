@@ -38,7 +38,7 @@ test('Não deve realizar o cadastro de missão com o nome já existente', async 
     baseLunar: 'selene',
     departureDate: '2027-08-22',
     returnDate: '29 de ago. de 2027',
-    price: '1000,00'
+    price: '2309'
   }
   const loginPage = new LoginPage(page)
   const dashPage = new DashboardPage(page)
@@ -51,7 +51,7 @@ test('Não deve realizar o cadastro de missão com o nome já existente', async 
   dashPage.abrirTelacadastro.click()
   await expect(registerPage.tittle).toBeVisible()
   registerPage.submit(mission)
-  await expect(toast.message).toContainText('Já existe uma missão com este ID.')
+  await expect(registerPage.alert).toContainText('Já existe uma missão com este ID.')
 
 })
 
@@ -75,5 +75,20 @@ test('Não deve realizar o cadastro de missão se não seguir o padrão de cria�
   await expect(registerPage.tittle).toBeVisible()
   registerPage.submit(mission)
   await expect(registerPage.alert).toContainText('Use o formato LP-0000')
+
+})
+
+test('Deve voltar para a listagem de missões ao desistir do cadastro', async ({page}) => {
+  const loginPage = new LoginPage(page)
+  const dashPage = new DashboardPage(page)
+  const registerPage = new RegisterPage(page)
+  const navBar = new NavBar(page)
+  loginPage.acessarLogin()
+  loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
+  await expect(navBar.logout).toBeVisible()
+  dashPage.abrirTelacadastro.click()
+  await registerPage.return.click()
+  await expect(navBar.logout).toBeVisible()
+
 
 })
