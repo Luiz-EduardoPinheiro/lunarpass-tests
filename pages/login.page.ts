@@ -18,6 +18,6 @@ export class LoginPage {
     async realizarLogin(email: string, senha: string){
         await this.page.getByPlaceholder('Informe seu email').fill(email)
         await this.page.getByPlaceholder('Sua senha secreta').fill(senha)
-        await this.page.getByRole('button', {name: 'Entrar'}).click()
+        await this.page.getByRole('button', {name: 'Entrar'}).click({timeout: 10_000})
     }
 }

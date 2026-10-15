@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test'
 import { LoginPage } from '../pages/login.page'
+import { DashboardPage } from '../pages/dash.page'
+import { RegisterPage } from '../pages/register.page'
 import { NavBar } from '../pages/components/navbar'
+import { Toast } from '../pages/components/toast'
 import { faker  } from '@faker-js/faker'
 import { Mission } from '../support/mission'
 
@@ -14,26 +17,63 @@ test('Deve realizar o cadastro com sucesso de uma missão', async ({ page }) => 
     price: '5324.70'
   }
   const loginPage = new LoginPage(page)
+  const dashPage = new DashboardPage(page)
+  const registerPage = new RegisterPage(page)
   const navBar = new NavBar(page)
+  const toast = new Toast(page)
   loginPage.acessarLogin()
   loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
   expect(navBar.logout).toBeVisible
-  await page.getByRole('link', { name: 'Nova missão' }).click()
-  await expect(page.getByRole('heading', { name: 'Programar missão' })).toBeVisible()
-  await page.getByRole('textbox', { name: 'ID da missão' }).fill(mission.id)
-  await page.getByRole('textbox', { name: 'Foguete' }).fill(mission.rocket)
-  await page.getByLabel('Base lunar').selectOption(mission.baseLunar)
-  await page.getByRole('textbox', { name: 'Data de partida' }).fill(mission.departureDate)
-  await expect(page.getByTestId('mission-form-return-date')).toContainText(mission.returnDate)
-  await page.getByRole('spinbutton', { name: 'Preço por passagem (USD)' }).fill(mission.price)
-  await page.getByRole('button', { name: 'Salvar missão' }).click()
-  await expect(page.getByRole('listitem')).toContainText('A nova missão foi adicionada ao catálogo e já está disponível para reservas.')
+  dashPage.abrirTelacadastro.click()
+  await expect(registerPage.tittle).toBeVisible()
+  registerPage.submit(mission)
+  await expect(toast.message).toContainText('A nova missão foi adicionada ao catálogo e já está disponível para reservas.')
+
 })
 
-test('Não deve realizar o cadastro de missão com o nome já existente', async ({page}) =>{
+test('Não deve realizar o cadastro de missão com o nome já existente', async ({ page }) => {
+    const mission: Mission = {
+    id: 'LP-0827B',
+    rocket: 'Starship',
+    baseLunar: 'selene',
+    departureDate: '2027-08-22',
+    returnDate: '29 de ago. de 2027',
+    price: '1000,00'
+  }
+  const loginPage = new LoginPage(page)
+  const dashPage = new DashboardPage(page)
+  const registerPage = new RegisterPage(page)
+  const navBar = new NavBar(page)
+  const toast = new Toast(page)
+  loginPage.acessarLogin()
+  loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
+  expect(navBar.logout).toBeVisible
+  dashPage.abrirTelacadastro.click()
+  await expect(registerPage.tittle).toBeVisible()
+  registerPage.submit(mission)
+  await expect(toast.message).toContainText('Já existe uma missão com este ID.')
 
 })
 
 test('Não deve realizar o cadastro de missão se não seguir o padrão de criação do nome da missão', async ({page}) => {
+  const mission: Mission = {
+    id: faker.string.alphanumeric({length: {min: 5, max: 5}, casing: 'upper'}),
+    rocket: 'Starship',
+    baseLunar: 'aurora',
+    departureDate: '2027-01-07',
+    returnDate: '14 de jan. de 2027',
+    price: '5324.70'
+  }
+  const loginPage = new LoginPage(page)
+  const dashPage = new DashboardPage(page)
+  const registerPage = new RegisterPage(page)
+  const navBar = new NavBar(page)
+  loginPage.acessarLogin()
+  loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
+  expect(navBar.logout).toBeVisible
+  dashPage.abrirTelacadastro.click()
+  await expect(registerPage.tittle).toBeVisible()
+  registerPage.submit(mission)
+  await expect(registerPage.alert).toContainText('Use o formato LP-0000')
 
 })
