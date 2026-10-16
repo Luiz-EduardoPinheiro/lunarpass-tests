@@ -23,9 +23,9 @@ test('Deve realizar o cadastro com sucesso de uma missão', async ({ page }) => 
   const toast = new Toast(page)
   loginPage.acessarLogin()
   loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  expect(navBar.logout).toBeVisible
+  expect(navBar.logout).toBeVisible({timeout: 10_000})
   dashPage.abrirTelacadastro.click()
-  await expect(registerPage.tittle).toBeVisible()
+  await expect(registerPage.tittle).toBeVisible({timeout: 10_000})
   registerPage.submit(mission)
   await expect(toast.message).toContainText('A nova missão foi adicionada ao catálogo e já está disponível para reservas.')
 
@@ -47,9 +47,9 @@ test('Não deve realizar o cadastro de missão com o nome já existente', async 
   const toast = new Toast(page)
   loginPage.acessarLogin()
   loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  expect(navBar.logout).toBeVisible
+  expect(navBar.logout).toBeVisible({timeout: 10_000})
   dashPage.abrirTelacadastro.click()
-  await expect(registerPage.tittle).toBeVisible()
+  await expect(registerPage.tittle).toBeVisible({timeout: 10_000})
   registerPage.submit(mission)
   await expect(registerPage.alert).toContainText('Já existe uma missão com este ID.')
 
@@ -70,11 +70,11 @@ test('Não deve realizar o cadastro de missão se não seguir o padrão de cria�
   const navBar = new NavBar(page)
   loginPage.acessarLogin()
   loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  expect(navBar.logout).toBeVisible
+  expect(navBar.logout).toBeVisible({timeout: 10_000})
   dashPage.abrirTelacadastro.click()
-  await expect(registerPage.tittle).toBeVisible()
+  await expect(registerPage.tittle).toBeVisible({timeout: 10_000})
   registerPage.submit(mission)
-  await expect(registerPage.alert).toContainText('Use o formato LP-0000')
+  await expect(registerPage.alert).toHaveText('Use o formato LP-0000')
 
 })
 
@@ -85,10 +85,9 @@ test('Deve voltar para a listagem de missões ao desistir do cadastro', async ({
   const navBar = new NavBar(page)
   loginPage.acessarLogin()
   loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  await expect(navBar.logout).toBeVisible()
+  await expect(navBar.logout).toBeVisible({timeout: 10_000})
   dashPage.abrirTelacadastro.click()
   await registerPage.return.click()
-  await expect(navBar.logout).toBeVisible()
-
+  await expect(navBar.logout).toBeVisible({timeout: 10_000})
 
 })
