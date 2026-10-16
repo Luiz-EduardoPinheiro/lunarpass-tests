@@ -7,6 +7,25 @@ import { Toast } from '../pages/components/toast'
 import { faker  } from '@faker-js/faker'
 import { Mission } from '../support/mission'
 
+let loginPage: LoginPage
+let dashPage: DashboardPage
+let registerPage: RegisterPage
+let navBar: NavBar
+let toast: Toast
+
+
+test.beforeEach(async ({page}) => {
+  loginPage = new LoginPage(page)
+  dashPage = new DashboardPage(page)
+  registerPage = new RegisterPage(page)
+  navBar = new NavBar(page)
+  toast = new Toast(page)
+  loginPage.acessarLogin()
+  loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
+  expect(navBar.logout).toBeVisible({timeout: 10_000})
+
+})
+
 test('Deve realizar o cadastro com sucesso de uma missão', async ({ page }) => {
   const mission: Mission = {
     id: 'LP-'+faker.string.alphanumeric({length: {min: 5, max: 5}, casing: 'upper'}),
@@ -16,14 +35,7 @@ test('Deve realizar o cadastro com sucesso de uma missão', async ({ page }) => 
     returnDate: '14 de jan. de 2027',
     price: '5324.70'
   }
-  const loginPage = new LoginPage(page)
-  const dashPage = new DashboardPage(page)
-  const registerPage = new RegisterPage(page)
-  const navBar = new NavBar(page)
-  const toast = new Toast(page)
-  loginPage.acessarLogin()
-  loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  expect(navBar.logout).toBeVisible({timeout: 10_000})
+
   dashPage.abrirTelacadastro.click()
   await expect(registerPage.tittle).toBeVisible({timeout: 10_000})
   registerPage.submit(mission)
@@ -40,14 +52,7 @@ test('Não deve realizar o cadastro de missão com o nome já existente', async 
     returnDate: '29 de ago. de 2027',
     price: '2309'
   }
-  const loginPage = new LoginPage(page)
-  const dashPage = new DashboardPage(page)
-  const registerPage = new RegisterPage(page)
-  const navBar = new NavBar(page)
-  const toast = new Toast(page)
-  loginPage.acessarLogin()
-  loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  expect(navBar.logout).toBeVisible({timeout: 10_000})
+
   dashPage.abrirTelacadastro.click()
   await expect(registerPage.tittle).toBeVisible({timeout: 10_000})
   registerPage.submit(mission)
@@ -64,13 +69,7 @@ test('Não deve realizar o cadastro de missão se não seguir o padrão de cria�
     returnDate: '14 de jan. de 2027',
     price: '5324.70'
   }
-  const loginPage = new LoginPage(page)
-  const dashPage = new DashboardPage(page)
-  const registerPage = new RegisterPage(page)
-  const navBar = new NavBar(page)
-  loginPage.acessarLogin()
-  loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  expect(navBar.logout).toBeVisible({timeout: 10_000})
+  
   dashPage.abrirTelacadastro.click()
   await expect(registerPage.tittle).toBeVisible({timeout: 10_000})
   registerPage.submit(mission)
@@ -78,14 +77,24 @@ test('Não deve realizar o cadastro de missão se não seguir o padrão de cria�
 
 })
 
+test('Não deve realizar o cadastro de missão duplicada', async ({page}) => {
+    const mission: Mission = {
+    id: 'LP-0827B',
+    rocket: 'Starship',
+    baseLunar: 'aurora',
+    departureDate: '2027-01-07',
+    returnDate: '14 de jan. de 2027',
+    price: '5324.70'
+  }
+  
+  dashPage.abrirTelacadastro.click()
+  await expect(registerPage.tittle).toBeVisible({timeout: 10_000})
+  registerPage.submit(mission)
+  await expect(registerPage.alert).toHaveText('Já existe uma missão com este ID.')
+
+})
+
 test('Deve voltar para a listagem de missões ao desistir do cadastro', async ({page}) => {
-  const loginPage = new LoginPage(page)
-  const dashPage = new DashboardPage(page)
-  const registerPage = new RegisterPage(page)
-  const navBar = new NavBar(page)
-  loginPage.acessarLogin()
-  loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  await expect(navBar.logout).toBeVisible({timeout: 10_000})
   dashPage.abrirTelacadastro.click()
   await registerPage.return.click()
   await expect(navBar.logout).toBeVisible({timeout: 10_000})
