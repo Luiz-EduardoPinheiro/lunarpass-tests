@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test'
 
-export class NavBar {
+export class Navbar {
     readonly page: Page
     readonly logout: Locator
 

@@ -1,6 +1,6 @@
 import {Locator, Page} from '@playwright/test'
 
-export class DashboardPage {
+export class DashPage {
     readonly page: Page
     readonly abrirTelacadastro: Locator
 
