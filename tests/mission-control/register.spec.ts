@@ -5,9 +5,9 @@ import { clearAndInsertMission, clearMission } from '../../support/db'
 
 
 test.beforeEach(async ({ app }) => {
-  await app.loginPage.acessarLogin()
-  await app.loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-  await expect(app.navbar.logout).toBeVisible({ timeout: 20_000 })
+  await app.mission.loginPage.acessarLogin()
+  await app.mission.loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
+  await expect(app.mission.navbar.logout).toBeVisible({ timeout: 20_000 })
 
 })
 
@@ -21,9 +21,9 @@ test('Deve realizar o cadastro com sucesso de uma missão', async ({ app }) => {
     price: 1284.99
   }
   await clearMission(mission)
-  await app.dashPage.abrirTelacadastro.click()
-  await expect(app.registerPage.tittle).toBeVisible({ timeout: 10_000 })
-  await app.registerPage.submit(mission)
+  await app.mission.dashPage.abrirTelacadastro.click()
+  await expect(app.mission.registerPage.tittle).toBeVisible({ timeout: 10_000 })
+  await app.mission.registerPage.submit(mission)
   await expect(app.toast.message).toContainText('A nova missão foi adicionada ao catálogo e já está disponível para reservas.')
 
 })
@@ -39,10 +39,10 @@ test('Não deve realizar o cadastro de missão com o nome já existente', async 
   }
 
   await clearAndInsertMission(mission)
-  await app.dashPage.abrirTelacadastro.click()
-  await expect(app.registerPage.tittle).toBeVisible({ timeout: 10_000 })
-  await app.registerPage.submit(mission)
-  await expect(app.registerPage.alert).toContainText('Já existe uma missão com este ID.')
+  await app.mission.dashPage.abrirTelacadastro.click()
+  await expect(app.mission.registerPage.tittle).toBeVisible({ timeout: 10_000 })
+  await app.mission.registerPage.submit(mission)
+  await expect(app.mission.registerPage.alert).toContainText('Já existe uma missão com este ID.')
 
 })
 
@@ -56,17 +56,17 @@ test('Não deve realizar o cadastro de missão se não seguir o padrão de cria�
     price: 5324.21
   }
 
-  await app.dashPage.abrirTelacadastro.click()
-  await expect(app.registerPage.tittle).toBeVisible({ timeout: 10_000 })
-  await app.registerPage.submit(mission)
-  await expect(app.registerPage.alert).toHaveText('Use o formato LP-0000')
+  await app.mission.dashPage.abrirTelacadastro.click()
+  await expect(app.mission.registerPage.tittle).toBeVisible({ timeout: 10_000 })
+  await app.mission.registerPage.submit(mission)
+  await expect(app.mission.registerPage.alert).toHaveText('Use o formato LP-0000')
 
 })
 
 
 test('Deve voltar para a listagem de missões ao desistir do cadastro', async ({ app }) => {
-  await app.dashPage.abrirTelacadastro.click()
-  await app.registerPage.return.click()
-  await expect(app.navbar.logout).toBeVisible({ timeout: 10_000 })
+  await app.mission.dashPage.abrirTelacadastro.click()
+  await app.mission.registerPage.return.click()
+  await expect(app.mission.navbar.logout).toBeVisible({ timeout: 10_000 })
 
 })
