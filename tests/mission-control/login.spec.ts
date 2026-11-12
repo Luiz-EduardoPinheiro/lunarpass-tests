@@ -1,4 +1,4 @@
-import { test, expect } from '../support/index.ts'
+import { test, expect } from '../../support/index.ts'
 
 test.beforeEach(async ({app}) => {
     await app.loginPage.acessarLogin()

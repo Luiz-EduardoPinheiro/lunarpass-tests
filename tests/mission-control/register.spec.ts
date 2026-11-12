@@ -1,7 +1,7 @@
-import { test, expect } from '../support/index.ts'
+import { test, expect } from '../../support/index.ts'
 import { faker } from '@faker-js/faker'
-import { Mission } from '../support/types'
-import { clearAndInsertMission, clearMission } from '../support/db'
+import { Mission } from '../../support/types'
+import { clearAndInsertMission, clearMission } from '../../support/db'
 
 
 test.beforeEach(async ({ app }) => {
