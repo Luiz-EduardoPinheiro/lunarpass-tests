@@ -1,0 +1,43 @@
+{
+  "skill_name": "qa-test-automation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Automatiza este cenário do Mission Control do Lunar Pass:\n\nContexto: Dado que estou autenticado no Mission Control\n\nCenário: Deve realizar o cadastro com sucesso de uma missão\nQuando eu gravo uma missão nova com ID exclusivo\nEntão eu sou informado de que a missão foi adicionada ao catálogo e já está disponível para reservas",
+      "expected_output": "Lê docs/arquitetura.md e o código em playwright/. Reutiliza LoginPage, DashPage, RegisterPage e Toast. Prepara a missão com clearMission e um ID que não é LP-0827A nem LP-0827B. Não cria afterEach, não usa cleanMission, não move expect para fora de submit e não altera playwright.config.ts. Roda npx playwright test no project mission-control e entrega o resumo com o resultado observado.",
+      "assertions": [
+        "Lê a arquitetura e os arquivos do módulo antes de escrever código",
+        "Não consulta assets/projeto nem cria essa pasta",
+        "O título do teste é exatamente 'Deve realizar o cadastro com sucesso de uma missão'",
+        "A massa usa clearMission ou clearAndInsertMission, com ID no formato LP- mais quatro dígitos e uma letra, diferente dos IDs já usados",
+        "Não introduz test.afterEach, factory, getByText, XPath nem caminho relativo no goto",
+        "Importa test e expect de ../../support/index.ts",
+        "O teste foi executado com --project=mission-control e o resultado informado é o observado, ou está marcado como não executado com o motivo"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Automatiza no Lunar Pass o cenário 'Buscar missões filtrando por uma base específica'. O Então pede que a lista exiba apenas missões da Base Lunar Alpha. A tela do storefront não mostra um atributo estável por código de missão e o Playwright MCP confirma que não há data-testid nem data-mission-code no item.",
+      "expected_output": "Não copia o seletor de exemplo de docs/aderencia.md. Não asserta contagem total nem posição. Não inventa data-mission-code. Registra a dúvida da lista do storefront, não escreve uma asserção que não consegue apontar para a missão do teste e não declara o teste como passou.",
+      "assertions": [
+        "Não usa data-mission-code, href inventado nem getByText como padrão do projeto",
+        "Não cria asserção por contagem total ou posição na lista",
+        "Registra a dúvida em vez de inventar o identificador da missão",
+        "Não altera baseURL nem remove o TODO do storefront",
+        "Não declara que o teste passou"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Automatiza o cenário 'Deve exibir o slogan na home page' do storefront. A aplicação em http://localhost:3000 não responde.",
+      "expected_output": "Não inventa locator novo, não habilita webServer, não muda credenciais nem baseURL. Se escrever algo, limita-se ao HomePage que já existe. Entrega como não executado e não diz que passou.",
+      "assertions": [
+        "Informa que a aplicação não respondeu",
+        "Não inventa locators de telas que não viu",
+        "Não altera playwright.config.ts, connection string ou dependências",
+        "O resumo marca o resultado como não executado com o motivo",
+        "Não declara que o teste passou"
+      ]
+    }
+  ]
+}
