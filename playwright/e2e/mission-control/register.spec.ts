@@ -13,7 +13,7 @@ test.beforeEach(async ({ app }) => {
 
 test('Deve realizar o cadastro com sucesso de uma missão', async ({ app }) => {
   const mission: Mission = {
-    id: 'LP-0827A',
+    id: 'LP-0827D',
     rocket: 'Starship',
     baseId: 'aurora',
     departureDate: '2027-01-07',
@@ -30,7 +30,7 @@ test('Deve realizar o cadastro com sucesso de uma missão', async ({ app }) => {
 
 test('Não deve realizar o cadastro de missão com o nome já existente', async ({ app }) => {
   const mission: Mission = {
-    id: 'LP-0827B',
+    id: 'LP-0827E',
     rocket: 'Starship',
     baseId: 'selene',
     departureDate: '2027-08-12',

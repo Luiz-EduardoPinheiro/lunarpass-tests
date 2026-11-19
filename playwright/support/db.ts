@@ -1,11 +1,12 @@
 import { Pool } from 'pg'
 import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely'
-import { Mission, Reservation, Ticket } from './types'
+import { LunarBase, Mission, Reservation, Ticket } from './types'
 
 interface Database {
     missions: Mission,
     reservations: Reservation,
-    tickets: Ticket
+    tickets: Ticket,
+    lunarBases: LunarBase
 }
 
 const dialect = new PostgresDialect({
@@ -61,11 +62,56 @@ export async function deleteReservation(missionId: string) {
         .execute()
 }
 
+export async function insertReservation(reservation: Reservation) {
+    await db
+        .insertInto('reservations')
+        .values(reservation)
+        .execute()
+}
+
 // ---- tickets ----
 
 export async function deleteTicket(missionId: string) {
     await db
         .deleteFrom('tickets')
         .where('missionId', '=', missionId)
+        .execute()
+}
+
+export async function insertTicket(ticket: Ticket) {
+    await db
+        .insertInto('tickets')
+        .values(ticket)
+        .execute()
+}
+
+// ---- lunar bases ----
+
+export async function clearAndInsertLunarBase(base: LunarBase) {
+    await deleteLunarBase(base.id)
+    await insertLunarBase(base)
+}
+
+export async function insertLunarBase(base: LunarBase) {
+    await db
+        .insertInto('lunarBases')
+        .values(base)
+        .execute()
+}
+
+export async function deleteLunarBase(id: string) {
+    const missions = await db
+        .selectFrom('missions')
+        .select('id')
+        .where('baseId', '=', id)
+        .execute()
+    for (const m of missions) {
+        await deleteReservation(m.id)
+        await deleteTicket(m.id)
+        await deleteMission(m.id)
+    }
+    await db
+        .deleteFrom('lunarBases')
+        .where('id', '=', id)
         .execute()
 }
