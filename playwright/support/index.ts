@@ -19,7 +19,7 @@ const createApp = (page: Page) => ({
   store: {
     homePage: new HomePage(page),
     missionsPage: new MissionsPage(page),
-    boakingPage: new BookingPage(page),
+    bookingPage: new BookingPage(page),
   },
   toast: new Toast(page),
 })

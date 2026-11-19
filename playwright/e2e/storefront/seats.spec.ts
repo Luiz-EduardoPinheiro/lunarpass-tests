@@ -13,11 +13,11 @@ test('Impedir o avanço sem seleção mínima de assentos', async ({ app }) => {
   }
 
   await clearAndInsertMission(mission)
-  await app.store.boakingPage.acessar(mission.id)
+  await app.store.bookingPage.acessar(mission.id)
 
-  await expect(app.store.boakingPage.continuarBtn).toBeDisabled()
-  await expect(app.store.boakingPage.instrucaoAssentos).toBeVisible()
-  await expect(app.store.boakingPage.etapaPassageiros).not.toBeVisible()
+  await expect(app.store.bookingPage.continuarBtn).toBeDisabled()
+  await expect(app.store.bookingPage.instrucaoAssentos).toBeVisible()
+  await expect(app.store.bookingPage.etapaPassageiros).not.toBeVisible()
 })
 
 test('Avançar com seleção máxima de assentos permitida', async ({ app }) => {
@@ -31,18 +31,18 @@ test('Avançar com seleção máxima de assentos permitida', async ({ app }) => 
   }
 
   await clearAndInsertMission(mission)
-  await app.store.boakingPage.acessar(mission.id)
+  await app.store.bookingPage.acessar(mission.id)
 
-  await app.store.boakingPage.selecionarAssento('A1')
-  await app.store.boakingPage.selecionarAssento('A2')
-  await app.store.boakingPage.selecionarAssento('B1')
-  await app.store.boakingPage.selecionarAssento('B2')
+  await app.store.bookingPage.selecionarAssento('A1')
+  await app.store.bookingPage.selecionarAssento('A2')
+  await app.store.bookingPage.selecionarAssento('B1')
+  await app.store.bookingPage.selecionarAssento('B2')
 
-  await expect(app.store.boakingPage.total).toContainText('USD 4,000.00')
+  await expect(app.store.bookingPage.total).toContainText('USD 4,000.00')
 
-  await expect(app.store.boakingPage.continuarBtn).toBeEnabled()
-  await app.store.boakingPage.continuar()
-  await expect(app.store.boakingPage.etapaPassageiros).toBeVisible()
+  await expect(app.store.bookingPage.continuarBtn).toBeEnabled()
+  await app.store.bookingPage.continuar()
+  await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
 })
 
 test('Tentar selecionar assento já ocupado', async ({ app }) => {
@@ -80,11 +80,11 @@ test('Tentar selecionar assento já ocupado', async ({ app }) => {
   await insertReservation(reservation)
   await insertTicket(ticketA1)
 
-  await app.store.boakingPage.acessar(mission.id)
+  await app.store.bookingPage.acessar(mission.id)
 
-  const assentoA1 = app.store.boakingPage.obterAssento('A1')
+  const assentoA1 = app.store.bookingPage.obterAssento('A1')
   await expect(assentoA1).toHaveAttribute('aria-disabled', 'true')
   await expect(assentoA1).toHaveAttribute('aria-pressed', 'false')
   await expect(assentoA1).toHaveAccessibleName(/Ocupado/)
-  await expect(app.store.boakingPage.obterTooltipAssento('A1')).toContainText('Ocupado')
+  await expect(app.store.bookingPage.obterTooltipAssento('A1')).toContainText('Ocupado')
 })
