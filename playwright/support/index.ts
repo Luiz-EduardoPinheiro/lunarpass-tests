@@ -6,6 +6,7 @@ import { RegisterPage } from './pages/mission-control/register.page'
 import { Navbar } from './pages/mission-control/navbar'
 import { HomePage } from './pages/storefront/home.page'
 import { MissionsPage } from './pages/storefront/missions.page'
+import { BookingPage } from './pages/storefront/booking.page'
 import { Toast } from './pages/shared/toast'
 
 const createApp = (page: Page) => ({
@@ -18,6 +19,7 @@ const createApp = (page: Page) => ({
   store: {
     homePage: new HomePage(page),
     missionsPage: new MissionsPage(page),
+    boakingPage: new BookingPage(page),
   },
   toast: new Toast(page),
 })
