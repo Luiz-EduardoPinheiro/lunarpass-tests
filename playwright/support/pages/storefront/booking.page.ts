@@ -11,6 +11,16 @@ export class BookingPage {
   readonly nomeCampo: Locator
   readonly passaporteCampo: Locator
   readonly irParaPagamentoBtn: Locator
+  readonly emailCampo: Locator
+  readonly nomeCartaoCampo: Locator
+  readonly numeroCartaoCampo: Locator
+  readonly validadeCampo: Locator
+  readonly cvvCampo: Locator
+  readonly pagarEReservarBtn: Locator
+  readonly alerta: Locator
+  readonly etapaConfirmacao: Locator
+  readonly codigoReserva: Locator
+  readonly passagens: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -23,6 +33,16 @@ export class BookingPage {
     this.nomeCampo = page.getByRole('textbox', { name: 'Nome completo' })
     this.passaporteCampo = page.getByRole('textbox', { name: 'Passaporte' })
     this.irParaPagamentoBtn = page.getByRole('button', { name: 'Ir para pagamento' })
+    this.emailCampo = page.getByRole('textbox', { name: 'E-mail de contato' })
+    this.nomeCartaoCampo = page.getByRole('textbox', { name: 'Nome no cartão' })
+    this.numeroCartaoCampo = page.getByRole('textbox', { name: 'Número do cartão' })
+    this.validadeCampo = page.getByRole('textbox', { name: 'Validade' })
+    this.cvvCampo = page.getByRole('textbox', { name: 'CVV' })
+    this.pagarEReservarBtn = page.getByRole('button', { name: 'Pagar e reservar' })
+    this.alerta = page.getByRole('alert')
+    this.etapaConfirmacao = page.getByRole('heading', { name: 'Sua reserva está confirmada.' })
+    this.codigoReserva = page.getByTestId('reservation-code')
+    this.passagens = page.getByTestId('reservation-ticket')
   }
 
   async acessar(missionId: string) {
@@ -56,5 +76,21 @@ export class BookingPage {
 
   obterErroPassageiro(): Locator {
     return this.page.getByRole('alert')
+  }
+
+  async preencherPagamento(email: string, nomeCartao: string, numeroCartao: string, validade: string, cvv: string) {
+    await this.emailCampo.fill(email)
+    await this.nomeCartaoCampo.fill(nomeCartao)
+    await this.numeroCartaoCampo.fill(numeroCartao)
+    await this.validadeCampo.fill(validade)
+    await this.cvvCampo.fill(cvv)
+  }
+
+  async pagarEReservar() {
+    await this.pagarEReservarBtn.click()
+  }
+
+  obterPassagemPorAssento(seat: string): Locator {
+    return this.passagens.filter({ hasText: `Passagem ${seat}` })
   }
 }
