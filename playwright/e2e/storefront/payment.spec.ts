@@ -6,7 +6,7 @@ test('Emissão de tickets com sucesso após pagamento aprovado', async ({ app })
   const mission: Mission = {
     id: 'LP-4001A',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'selene',
     departureDate: '2027-11-01',
     returnDate: '2027-11-08',
     price: 1000.00
@@ -21,9 +21,16 @@ test('Emissão de tickets com sucesso após pagamento aprovado', async ({ app })
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('buzz@lunarpass.dev', 'Buzz Aldrin', '4242 4242 4242 4242', '12/30', '123')
+  await app.services.stripe.interceptarPagamento({
+    status: 'approved',
+    message: 'Pagamento aprovado.',
+    brand: 'Visa',
+    paymentId: 'pi_3UX6sz14NoBxd29D08GIaxi1'
+  })
   await app.store.bookingPage.pagarEReservar()
 
   await expect(app.store.bookingPage.etapaConfirmacao).toBeVisible()
+  await expect(app.store.bookingPage.statusPagamento).toHaveText('Pagamento aprovado! Pode arrumar as malas: a Lua já está esperando por você.')
   await expect(app.store.bookingPage.codigoReserva).toHaveText(/^[A-Z0-9]{6}$/)
   await expect(app.store.bookingPage.passagens).toHaveCount(1)
   await expect(app.store.bookingPage.obterPassagemPorAssento('A1')).toContainText('Buzz Aldrin')
@@ -34,7 +41,7 @@ test('Emissão de tickets com sucesso após pagamento aprovado com cartão Maste
   const mission: Mission = {
     id: 'LP-4001D',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'selene',
     departureDate: '2027-12-01',
     returnDate: '2027-12-08',
     price: 1000.00
@@ -49,9 +56,16 @@ test('Emissão de tickets com sucesso após pagamento aprovado com cartão Maste
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('sally@lunarpass.dev', 'Sally Ride', '5555 5555 5555 4444', '12/30', '123')
+  await app.services.stripe.interceptarPagamento({
+    status: 'approved',
+    message: 'Pagamento aprovado.',
+    brand: 'Mastercard',
+    paymentId: 'pi_3UX6sz14NoBxd29D08GIaxi1'
+  })
   await app.store.bookingPage.pagarEReservar()
 
   await expect(app.store.bookingPage.etapaConfirmacao).toBeVisible()
+  await expect(app.store.bookingPage.statusPagamento).toHaveText('Pagamento aprovado! Pode arrumar as malas: a Lua já está esperando por você.')
   await expect(app.store.bookingPage.codigoReserva).toHaveText(/^[A-Z0-9]{6}$/)
   await expect(app.store.bookingPage.passagens).toHaveCount(1)
   await expect(app.store.bookingPage.obterPassagemPorAssento('A1')).toContainText('Sally Ride')
@@ -62,7 +76,7 @@ test('Emissão de tickets com sucesso após pagamento aprovado com cartão Ameri
   const mission: Mission = {
     id: 'LP-4001E',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'selene',
     departureDate: '2027-12-10',
     returnDate: '2027-12-17',
     price: 1000.00
@@ -77,9 +91,16 @@ test('Emissão de tickets com sucesso após pagamento aprovado com cartão Ameri
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('mae@lunarpass.dev', 'Mae Jemison', '3782 822463 10005', '12/30', '1234')
+  await app.services.stripe.interceptarPagamento({
+    status: 'approved',
+    message: 'Pagamento aprovado.',
+    brand: 'American Express',
+    paymentId: 'pi_3UX6sz14NoBxd29D08GIaxi1'
+  })
   await app.store.bookingPage.pagarEReservar()
 
   await expect(app.store.bookingPage.etapaConfirmacao).toBeVisible()
+  await expect(app.store.bookingPage.statusPagamento).toHaveText('Pagamento aprovado! Pode arrumar as malas: a Lua já está esperando por você.')
   await expect(app.store.bookingPage.codigoReserva).toHaveText(/^[A-Z0-9]{6}$/)
   await expect(app.store.bookingPage.passagens).toHaveCount(1)
   await expect(app.store.bookingPage.obterPassagemPorAssento('A1')).toContainText('Mae Jemison')
@@ -90,7 +111,7 @@ test('Manter dados na tela quando o pagamento é recusado', async ({ app }) => {
   const mission: Mission = {
     id: 'LP-4001B',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'selene',
     departureDate: '2027-11-10',
     returnDate: '2027-11-17',
     price: 1000.00
@@ -105,9 +126,14 @@ test('Manter dados na tela quando o pagamento é recusado', async ({ app }) => {
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('buzz@lunarpass.dev', 'Buzz Aldrin', '4000 0000 0000 0002', '12/30', '123')
+  await app.services.stripe.interceptarPagamento({
+    status: 'declined',
+    message: 'Pagamento negado pela operadora do cartão.',
+    brand: 'Visa'
+  })
   await app.store.bookingPage.pagarEReservar()
 
-  await expect(app.store.bookingPage.alerta).toContainText('Pagamento negado pelo simulador.')
+  await expect(app.store.bookingPage.alerta).toContainText('Pagamento negado pela operadora do cartão.')
   await expect(app.store.bookingPage.etapaConfirmacao).not.toBeVisible()
   await expect(app.store.bookingPage.etapaPagamento).toBeVisible()
   await expect(app.store.bookingPage.emailCampo).toHaveValue('buzz@lunarpass.dev')
@@ -121,7 +147,7 @@ test('Bloqueio da reserva por concorrência de assentos no momento do processame
   const mission: Mission = {
     id: 'LP-4001C',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'selene',
     departureDate: '2027-11-20',
     returnDate: '2027-11-27',
     price: 1000.00

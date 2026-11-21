@@ -12,11 +12,14 @@ interface Database {
 const dialect = new PostgresDialect({
   pool: new Pool({
     host: 'aws-0-us-east-1.pooler.supabase.com',
-    port: 5432,                                
+    port: 6543,
     database: 'postgres',
     user: 'postgres.gklawltosxpyvzszcapg',
     password: 'decfomjpL0EDhp9d',
-    ssl: { rejectUnauthorized: false }
+    ssl: { rejectUnauthorized: false },
+    max: 2,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 5000
   })
 })
 

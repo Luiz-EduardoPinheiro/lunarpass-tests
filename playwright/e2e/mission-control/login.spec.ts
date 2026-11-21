@@ -6,7 +6,7 @@ test.beforeEach(async ({app}) => {
 
 test('Deve realizar autenticação com sucesso', async ({app}) => {
     await app.mission.loginPage.realizarLogin('buzz@lunarpass.dev', 'pwd123')
-    await expect(app.mission.navbar.logout).toBeVisible()
+    await expect(app.mission.navbar.logout).toBeVisible({timeout: 10_000})
 })
 
 test('Deve realizar validação dos campos obrigatórios para o login', async ({app}) => {

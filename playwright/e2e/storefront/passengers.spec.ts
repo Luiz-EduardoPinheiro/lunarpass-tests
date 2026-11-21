@@ -18,7 +18,7 @@ test('Aceitar nome com 3 caracteres e passaporte com 5 caracteres (mínimos vál
   const mission: Mission = {
     id: 'LP-3001A',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'orion',
     departureDate: '2027-08-01',
     returnDate: '2027-08-08',
     price: 1000.00
@@ -41,7 +41,7 @@ test('Aceitar nome com 120 caracteres e passaporte com 30 caracteres (máximos v
   const mission: Mission = {
     id: 'LP-3001B',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'orion',
     departureDate: '2027-08-10',
     returnDate: '2027-08-17',
     price: 1000.00
@@ -64,7 +64,7 @@ test('Recusar nome com 2 caracteres (abaixo do limite mínimo)', async ({ app })
   const mission: Mission = {
     id: 'LP-3001C',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'orion',
     departureDate: '2027-08-20',
     returnDate: '2027-08-27',
     price: 1000.00
@@ -89,7 +89,7 @@ test('Recusar nome com 121 caracteres (acima do limite máximo)', async ({ app }
   const mission: Mission = {
     id: 'LP-3001D',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'orion',
     departureDate: '2027-09-01',
     returnDate: '2027-09-08',
     price: 1000.00
@@ -114,7 +114,7 @@ test('Recusar passaporte com 4 caracteres (abaixo do limite mínimo)', async ({ 
   const mission: Mission = {
     id: 'LP-3001E',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'orion',
     departureDate: '2027-09-10',
     returnDate: '2027-09-17',
     price: 1000.00
@@ -139,7 +139,7 @@ test('Recusar passaporte com 31 caracteres (acima do limite máximo)', async ({ 
   const mission: Mission = {
     id: 'LP-3001F',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'orion',
     departureDate: '2027-09-20',
     returnDate: '2027-09-27',
     price: 1000.00

@@ -19,6 +19,7 @@ export class BookingPage {
   readonly pagarEReservarBtn: Locator
   readonly alerta: Locator
   readonly etapaConfirmacao: Locator
+  readonly statusPagamento: Locator
   readonly codigoReserva: Locator
   readonly passagens: Locator
 
@@ -41,6 +42,7 @@ export class BookingPage {
     this.pagarEReservarBtn = page.getByRole('button', { name: 'Pagar e reservar' })
     this.alerta = page.getByRole('alert')
     this.etapaConfirmacao = page.getByRole('heading', { name: 'Sua reserva está confirmada.' })
+    this.statusPagamento = page.getByTestId('reservation-payment-status')
     this.codigoReserva = page.getByTestId('reservation-code')
     this.passagens = page.getByTestId('reservation-ticket')
   }

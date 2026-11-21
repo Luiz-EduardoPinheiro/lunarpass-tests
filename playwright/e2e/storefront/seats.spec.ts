@@ -6,7 +6,7 @@ test('Impedir o avanço sem seleção mínima de assentos', async ({ app }) => {
   const mission: Mission = {
     id: 'LP-2002A',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'aurora',
     departureDate: '2027-07-01',
     returnDate: '2027-07-08',
     price: 1000.00
@@ -24,7 +24,7 @@ test('Avançar com seleção máxima de assentos permitida', async ({ app }) => 
   const mission: Mission = {
     id: 'LP-2002B',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'aurora',
     departureDate: '2027-07-10',
     returnDate: '2027-07-17',
     price: 1000.00
@@ -49,7 +49,7 @@ test('Tentar selecionar assento já ocupado', async ({ app }) => {
   const mission: Mission = {
     id: 'LP-2002C',
     rocket: 'Starship',
-    baseId: 'alpha',
+    baseId: 'aurora',
     departureDate: '2027-07-20',
     returnDate: '2027-07-27',
     price: 1000.00
