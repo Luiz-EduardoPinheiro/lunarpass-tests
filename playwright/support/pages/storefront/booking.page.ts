@@ -22,6 +22,10 @@ export class BookingPage {
   readonly statusPagamento: Locator
   readonly codigoReserva: Locator
   readonly passagens: Locator
+  readonly resumoDesconto: Locator
+  readonly resumoTotal: Locator
+  readonly totalConfirmacao: Locator
+  readonly descontoConfirmacao: Locator
 
   constructor(page: Page) {
     this.page = page
@@ -45,6 +49,10 @@ export class BookingPage {
     this.statusPagamento = page.getByTestId('reservation-payment-status')
     this.codigoReserva = page.getByTestId('reservation-code')
     this.passagens = page.getByTestId('reservation-ticket')
+    this.resumoDesconto = page.getByTestId('summary-discount')
+    this.resumoTotal = page.getByTestId('summary-total-price')
+    this.totalConfirmacao = page.getByTestId('reservation-total-price')
+    this.descontoConfirmacao = page.getByTestId('reservation-discount')
   }
 
   async acessar(missionId: string) {
@@ -63,6 +71,10 @@ export class BookingPage {
     await this.obterAssento(seat).click()
   }
 
+  async desmarcarAssento(seat: string) {
+    await this.obterAssento(seat).click()
+  }
+
   async continuar() {
     await this.continuarBtn.click()
   }
@@ -70,6 +82,13 @@ export class BookingPage {
   async preencherPassageiro(nome: string, passaporte: string) {
     await this.nomeCampo.fill(nome)
     await this.passaporteCampo.fill(passaporte)
+  }
+
+  async preencherPassageiros(passageiros: Array<{ nome: string, passaporte: string }>) {
+    for (let i = 0; i < passageiros.length; i++) {
+      await this.page.getByRole('textbox', { name: 'Nome completo' }).nth(i).fill(passageiros[i].nome)
+      await this.page.getByRole('textbox', { name: 'Passaporte' }).nth(i).fill(passageiros[i].passaporte)
+    }
   }
 
   async irParaPagamento() {

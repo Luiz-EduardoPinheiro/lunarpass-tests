@@ -38,7 +38,7 @@ test('Avançar com seleção máxima de assentos permitida', async ({ app }) => 
   await app.store.bookingPage.selecionarAssento('B1')
   await app.store.bookingPage.selecionarAssento('B2')
 
-  await expect(app.store.bookingPage.total).toContainText('USD 4,000.00')
+  await expect(app.store.bookingPage.total).toContainText('USD 3,600.00')
 
   await expect(app.store.bookingPage.continuarBtn).toBeEnabled()
   await app.store.bookingPage.continuar()
