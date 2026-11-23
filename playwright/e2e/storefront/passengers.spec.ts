@@ -1,6 +1,7 @@
 import { test, expect } from '../../support/index.ts'
 import { Mission } from '../../support/types.ts'
 import { clearAndInsertMission } from '../../support/db.ts'
+import { getDataNascimentoPorIdade } from '../../support/helpers.ts'
 
 const NOME_30 = 'Nome Com Trinta Caracteres Para'
 const NOME_3 = 'Ana'
@@ -13,6 +14,10 @@ const PASS_30 = 'P'.repeat(30)
 const PASS_15 = 'PASS12345678901'
 const PASS_4 = 'PASS'
 const PASS_31 = 'P'.repeat(31)
+
+const DATA_NASC_25 = getDataNascimentoPorIdade(25)
+const DATA_NASC_18 = getDataNascimentoPorIdade(18)
+const DATA_NASC_17 = getDataNascimentoPorIdade(17)
 
 test('Aceitar nome com 3 caracteres e passaporte com 5 caracteres (mínimos válidos)', async ({ app }) => {
   const mission: Mission = {
@@ -31,7 +36,7 @@ test('Aceitar nome com 3 caracteres e passaporte com 5 caracteres (mínimos vál
 
   await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
 
-  await app.store.bookingPage.preencherPassageiro(NOME_3, PASS_5)
+  await app.store.bookingPage.preencherPassageiro(NOME_3, PASS_5, DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await expect(app.store.bookingPage.etapaPagamento).toBeVisible()
@@ -54,7 +59,7 @@ test('Aceitar nome com 120 caracteres e passaporte com 30 caracteres (máximos v
 
   await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
 
-  await app.store.bookingPage.preencherPassageiro(NOME_120, PASS_30)
+  await app.store.bookingPage.preencherPassageiro(NOME_120, PASS_30, DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await expect(app.store.bookingPage.etapaPagamento).toBeVisible()
@@ -77,7 +82,7 @@ test('Recusar nome com 2 caracteres (abaixo do limite mínimo)', async ({ app })
 
   await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
 
-  await app.store.bookingPage.preencherPassageiro(NOME_2, PASS_15)
+  await app.store.bookingPage.preencherPassageiro(NOME_2, PASS_15, DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await expect(app.store.bookingPage.etapaPagamento).not.toBeVisible()
@@ -102,7 +107,7 @@ test('Recusar nome com 121 caracteres (acima do limite máximo)', async ({ app }
 
   await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
 
-  await app.store.bookingPage.preencherPassageiro(NOME_121, PASS_15)
+  await app.store.bookingPage.preencherPassageiro(NOME_121, PASS_15, DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await expect(app.store.bookingPage.etapaPagamento).not.toBeVisible()
@@ -127,7 +132,7 @@ test('Recusar passaporte com 4 caracteres (abaixo do limite mínimo)', async ({ 
 
   await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
 
-  await app.store.bookingPage.preencherPassageiro(NOME_30, PASS_4)
+  await app.store.bookingPage.preencherPassageiro(NOME_30, PASS_4, DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await expect(app.store.bookingPage.etapaPagamento).not.toBeVisible()
@@ -152,10 +157,79 @@ test('Recusar passaporte com 31 caracteres (acima do limite máximo)', async ({ 
 
   await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
 
-  await app.store.bookingPage.preencherPassageiro(NOME_30, PASS_31)
+  await app.store.bookingPage.preencherPassageiro(NOME_30, PASS_31, DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await expect(app.store.bookingPage.etapaPagamento).not.toBeVisible()
   await expect(app.store.bookingPage.obterErroPassageiro()).toHaveText('O passaporte deve ter no máximo 30 caracteres')
   await expect(app.store.bookingPage.passaporteCampo).toBeFocused()
+})
+
+test('Não deve permitir o cadastro de passageiro menor de idade', async ({ app }) => {
+  const mission: Mission = {
+    id: 'LP-3001G',
+    rocket: 'Starship',
+    baseId: 'orion',
+    departureDate: '2027-09-25',
+    returnDate: '2027-10-02',
+    price: 1000.00
+  }
+
+  await clearAndInsertMission(mission)
+  await app.store.bookingPage.acessar(mission.id)
+  await app.store.bookingPage.selecionarAssento('A1')
+  await app.store.bookingPage.continuar()
+
+  await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
+
+  await app.store.bookingPage.preencherPassageiro(NOME_30, PASS_15, DATA_NASC_17)
+  await app.store.bookingPage.irParaPagamento()
+
+  await expect(app.store.bookingPage.obterErroPassageiro()).toHaveText('O passageiro precisa ser maior de idade.')
+})
+
+test('Deve permitir o cadastro de passageiro maior de idade', async ({ app }) => {
+  const mission: Mission = {
+    id: 'LP-3001H',
+    rocket: 'Starship',
+    baseId: 'orion',
+    departureDate: '2027-10-05',
+    returnDate: '2027-10-12',
+    price: 1000.00
+  }
+
+  await clearAndInsertMission(mission)
+  await app.store.bookingPage.acessar(mission.id)
+  await app.store.bookingPage.selecionarAssento('A1')
+  await app.store.bookingPage.continuar()
+
+  await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
+
+  await app.store.bookingPage.preencherPassageiro(NOME_30, PASS_15, DATA_NASC_25)
+  await app.store.bookingPage.irParaPagamento()
+
+  await expect(app.store.bookingPage.etapaPagamento).toBeVisible()
+})
+
+test('Deve permitir o cadastro de passageiro maior de idade com 18 anos', async ({ app }) => {
+  const mission: Mission = {
+    id: 'LP-3001J',
+    rocket: 'Starship',
+    baseId: 'orion',
+    departureDate: '2027-10-05',
+    returnDate: '2027-10-12',
+    price: 1000.00
+  }
+
+  await clearAndInsertMission(mission)
+  await app.store.bookingPage.acessar(mission.id)
+  await app.store.bookingPage.selecionarAssento('A1')
+  await app.store.bookingPage.continuar()
+
+  await expect(app.store.bookingPage.etapaPassageiros).toBeVisible()
+
+  await app.store.bookingPage.preencherPassageiro(NOME_30, PASS_15, DATA_NASC_18)
+  await app.store.bookingPage.irParaPagamento()
+
+  await expect(app.store.bookingPage.etapaPagamento).toBeVisible()
 })

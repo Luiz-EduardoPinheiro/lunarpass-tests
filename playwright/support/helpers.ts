@@ -13,3 +13,12 @@ export function formatDate(dateStr: string): string {
 
     return `${day} de ${monthName} de ${year}`;
 }
+
+export function getDataNascimentoPorIdade(idade: number): string {
+    const hoje = new Date();
+    const ano = hoje.getFullYear() - idade;
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+
+    return `${ano}-${mes}-${dia}`;
+}

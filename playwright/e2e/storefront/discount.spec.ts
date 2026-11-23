@@ -1,6 +1,9 @@
 import { test, expect } from '../../support/index.ts'
 import { Mission } from '../../support/types.ts'
 import { clearAndInsertMission } from '../../support/db.ts'
+import { getDataNascimentoPorIdade } from '../../support/helpers.ts'
+
+const DATA_NASC_25 = getDataNascimentoPorIdade(25)
 
 test('Compra de 1 assento sem desconto', async ({ app }) => {
   const mission: Mission = {
@@ -128,10 +131,10 @@ test('Finalização do pagamento com desconto aplicado', async ({ app }) => {
   await app.store.bookingPage.continuar()
 
   await app.store.bookingPage.preencherPassageiros([
-    { nome: 'Buzz Aldrin', passaporte: 'PASS001' },
-    { nome: 'Sally Ride', passaporte: 'PASS002' },
-    { nome: 'Mae Jemison', passaporte: 'PASS003' },
-    { nome: 'Neil Armstrong', passaporte: 'PASS004' }
+    { nome: 'Buzz Aldrin', passaporte: 'PASS001', dataNascimento: DATA_NASC_25 },
+    { nome: 'Sally Ride', passaporte: 'PASS002', dataNascimento: DATA_NASC_25 },
+    { nome: 'Mae Jemison', passaporte: 'PASS003', dataNascimento: DATA_NASC_25 },
+    { nome: 'Neil Armstrong', passaporte: 'PASS004', dataNascimento: DATA_NASC_25 }
   ])
   await app.store.bookingPage.irParaPagamento()
 

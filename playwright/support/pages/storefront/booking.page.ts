@@ -10,6 +10,7 @@ export class BookingPage {
   readonly etapaPagamento: Locator
   readonly nomeCampo: Locator
   readonly passaporteCampo: Locator
+  readonly dataNascimentoCampo: Locator
   readonly irParaPagamentoBtn: Locator
   readonly emailCampo: Locator
   readonly nomeCartaoCampo: Locator
@@ -37,6 +38,7 @@ export class BookingPage {
     this.etapaPagamento = page.getByRole('heading', { name: 'Pagamento' })
     this.nomeCampo = page.getByRole('textbox', { name: 'Nome completo' })
     this.passaporteCampo = page.getByRole('textbox', { name: 'Passaporte' })
+    this.dataNascimentoCampo = page.getByRole('textbox', { name: 'Data de nascimento' })
     this.irParaPagamentoBtn = page.getByRole('button', { name: 'Ir para pagamento' })
     this.emailCampo = page.getByRole('textbox', { name: 'E-mail de contato' })
     this.nomeCartaoCampo = page.getByRole('textbox', { name: 'Nome no cartão' })
@@ -79,15 +81,21 @@ export class BookingPage {
     await this.continuarBtn.click()
   }
 
-  async preencherPassageiro(nome: string, passaporte: string) {
+  async preencherPassageiro(nome: string, passaporte: string, dataNascimento?: string) {
     await this.nomeCampo.fill(nome)
     await this.passaporteCampo.fill(passaporte)
+    if (dataNascimento) {
+      await this.dataNascimentoCampo.fill(dataNascimento)
+    }
   }
 
-  async preencherPassageiros(passageiros: Array<{ nome: string, passaporte: string }>) {
+  async preencherPassageiros(passageiros: Array<{ nome: string, passaporte: string, dataNascimento?: string }>) {
     for (let i = 0; i < passageiros.length; i++) {
       await this.page.getByRole('textbox', { name: 'Nome completo' }).nth(i).fill(passageiros[i].nome)
       await this.page.getByRole('textbox', { name: 'Passaporte' }).nth(i).fill(passageiros[i].passaporte)
+      if (passageiros[i].dataNascimento) {
+        await this.page.getByRole('textbox', { name: 'Data de nascimento' }).nth(i).fill(passageiros[i].dataNascimento)
+      }
     }
   }
 

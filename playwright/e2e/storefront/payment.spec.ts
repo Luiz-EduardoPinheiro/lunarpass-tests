@@ -1,6 +1,9 @@
 import { test, expect } from '../../support/index.ts'
 import { Mission, Reservation, Ticket } from '../../support/types.ts'
 import { clearAndInsertMission, insertReservation, insertTicket } from '../../support/db.ts'
+import { getDataNascimentoPorIdade } from '../../support/helpers.ts'
+
+const DATA_NASC_25 = getDataNascimentoPorIdade(25)
 
 test('Emissão de tickets com sucesso após pagamento aprovado', async ({ app }) => {
   const mission: Mission = {
@@ -17,7 +20,7 @@ test('Emissão de tickets com sucesso após pagamento aprovado', async ({ app })
   await app.store.bookingPage.selecionarAssento('A1')
   await app.store.bookingPage.continuar()
 
-  await app.store.bookingPage.preencherPassageiro('Buzz Aldrin', 'PASS12345')
+  await app.store.bookingPage.preencherPassageiro('Buzz Aldrin', 'PASS12345', DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('buzz@lunarpass.dev', 'Buzz Aldrin', '4242 4242 4242 4242', '12/30', '123')
@@ -52,7 +55,7 @@ test('Emissão de tickets com sucesso após pagamento aprovado com cartão Maste
   await app.store.bookingPage.selecionarAssento('A1')
   await app.store.bookingPage.continuar()
 
-  await app.store.bookingPage.preencherPassageiro('Sally Ride', 'PASS98765')
+  await app.store.bookingPage.preencherPassageiro('Sally Ride', 'PASS98765', DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('sally@lunarpass.dev', 'Sally Ride', '5555 5555 5555 4444', '12/30', '123')
@@ -87,7 +90,7 @@ test('Emissão de tickets com sucesso após pagamento aprovado com cartão Ameri
   await app.store.bookingPage.selecionarAssento('A1')
   await app.store.bookingPage.continuar()
 
-  await app.store.bookingPage.preencherPassageiro('Mae Jemison', 'PASS11223')
+  await app.store.bookingPage.preencherPassageiro('Mae Jemison', 'PASS11223', DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('mae@lunarpass.dev', 'Mae Jemison', '3782 822463 10005', '12/30', '1234')
@@ -122,7 +125,7 @@ test('Manter dados na tela quando o pagamento é recusado', async ({ app }) => {
   await app.store.bookingPage.selecionarAssento('A1')
   await app.store.bookingPage.continuar()
 
-  await app.store.bookingPage.preencherPassageiro('Buzz Aldrin', 'PASS12345')
+  await app.store.bookingPage.preencherPassageiro('Buzz Aldrin', 'PASS12345', DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('buzz@lunarpass.dev', 'Buzz Aldrin', '4000 0000 0000 0002', '12/30', '123')
@@ -178,7 +181,7 @@ test('Bloqueio da reserva por concorrência de assentos no momento do processame
   await app.store.bookingPage.selecionarAssento('A1')
   await app.store.bookingPage.continuar()
 
-  await app.store.bookingPage.preencherPassageiro('Buzz Aldrin', 'PASS12345')
+  await app.store.bookingPage.preencherPassageiro('Buzz Aldrin', 'PASS12345', DATA_NASC_25)
   await app.store.bookingPage.irParaPagamento()
 
   await app.store.bookingPage.preencherPagamento('buzz@lunarpass.dev', 'Buzz Aldrin', '4242 4242 4242 4242', '12/30', '123')

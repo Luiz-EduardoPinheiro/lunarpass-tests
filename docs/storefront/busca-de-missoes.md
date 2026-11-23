@@ -2,7 +2,6 @@
 
 ### Cenário: Buscar missões para todas as bases lunares disponíveis
 
-*Regras de negócio:* existem 4 bases lunares disponíveis (Alpha, Orion, Aurora e Selene) e as missões são de ida e volta, com duração de 7 dias. Uma busca sem seleção de bases (ou com todas selecionadas) retorna missões para todas as bases.
 
 **Dado** que o catálogo de missões da Lunar Pass está disponível  
 **Quando** eu busco missões sem aplicar filtro de base lunar  
@@ -11,7 +10,6 @@
 
 ### Cenário: Buscar missões filtrando por uma base específica
 
-*Regras de negócio:* existem 4 bases lunares disponíveis (Alpha, Orion, Aurora e Selene) e as missões são de ida e volta, com duração de 7 dias.
 
 **Dado** que o catálogo de missões da Lunar Pass está disponível  
 **Quando** eu aplico o filtro pela Base Lunar Alpha  
@@ -20,7 +18,6 @@
 
 ### Cenário: Lidar com ausência de missões para os filtros
 
-*Regras de negócio:* existem 4 bases lunares disponíveis (Alpha, Orion, Aurora e Selene). A busca pode resultar em zero missões.
 
 **Dado** que o catálogo de missões da Lunar Pass está disponível  
 **E** que não existem missões vigentes para a Base Lunar Aurora  
@@ -30,7 +27,6 @@
 
 ### Cenário: Missão esgotada aparece nos resultados sem opção de reserva
 
-*Regras de negócio:* missões totalmente ocupadas aparecem como "Esgotado" e não podem ser reservadas.
 
 **Dado** que o catálogo de missões da Lunar Pass está disponível  
 **E** que existe uma missão para a Base Lunar Selene sem assentos disponíveis  

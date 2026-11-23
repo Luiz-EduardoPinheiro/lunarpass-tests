@@ -16,7 +16,6 @@
 
 ### Cenário: Bloqueio da reserva por concorrência de assentos no momento do processamento
 
-*Regras de negócio:* se outra pessoa comprar os assentos durante o fluxo, a reserva é bloqueada no momento do pagamento.
 
 **Dado** que estou na etapa de pagamento com os dados dos passageiros preenchidos corretamente  
 **E** que os assentos da minha seleção foram confirmados por outra pessoa instantes antes  
