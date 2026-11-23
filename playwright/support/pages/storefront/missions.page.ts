@@ -20,7 +20,7 @@ export class MissionsPage {
   }
 
   async acessar() {
-    await this.page.goto('http://localhost:3000/missions')
+    await this.page.goto('/missions')
   }
 
   obterMissaoPorCodigo(codigo: string): Locator {

@@ -36,7 +36,7 @@ export default defineConfig({
       testDir: './playwright/e2e/mission-control',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000',
+        baseURL: 'https://lunarpass-luizpinheiro.vercel.app',
       },
     },
     {
@@ -44,7 +44,7 @@ export default defineConfig({
       testDir: './playwright/e2e/storefront',
       use: {
         ...devices['Desktop Chrome'],
-        baseURL: 'http://localhost:3000', // TODO: confirmar baseURL do storefront
+        baseURL: 'https://lunarpass-luizpinheiro.vercel.app',
       },
     },
   ],

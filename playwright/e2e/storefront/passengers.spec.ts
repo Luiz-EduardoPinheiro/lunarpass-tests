@@ -213,7 +213,7 @@ test('Deve permitir o cadastro de passageiro maior de idade', async ({ app }) =>
 
 test('Deve permitir o cadastro de passageiro maior de idade com 18 anos', async ({ app }) => {
   const mission: Mission = {
-    id: 'LP-3001J',
+    id: 'LP-3001I',
     rocket: 'Starship',
     baseId: 'orion',
     departureDate: '2027-10-05',

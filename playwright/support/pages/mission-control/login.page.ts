@@ -10,7 +10,7 @@ export class LoginPage {
     }
 
     async acessarLogin(){
-        await this.page.goto('http://localhost:3000/mission-control/login')
+        await this.page.goto('/mission-control/login')
         const texto = this.page.getByRole('heading', {name: 'Mission Control'})
         await expect(texto).toBeVisible()
     }
