@@ -9,13 +9,12 @@ interface Database {
     lunarBases: LunarBase
 }
 
+const connectionString = process.env.DATABASE_URL
+if (!connectionString) throw new Error('Defina DATABASE_URL (veja .env.example).')
+
 const dialect = new PostgresDialect({
   pool: new Pool({
-    host: 'aws-0-us-east-1.pooler.supabase.com',
-    port: 6543,
-    database: 'postgres',
-    user: 'postgres.gklawltosxpyvzszcapg',
-    password: 'decfomjpL0EDhp9d',
+    connectionString,
     ssl: { rejectUnauthorized: false },
     max: 2,
     connectionTimeoutMillis: 10000,
